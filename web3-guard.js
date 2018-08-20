@@ -7,7 +7,7 @@ class Guard {
     })
   }
 
-  confirm = (confirmation, filter) => {
+  confirm (confirmation, filter) {
     let cb = filter.callbacks[0]
     cb(null, {
       confirmed: true,
@@ -15,8 +15,8 @@ class Guard {
     })
   }
 
-  queue = (event) => {
-
+  queue (event) {
+    return true
   }
 }
 
