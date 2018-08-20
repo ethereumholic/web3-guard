@@ -21,8 +21,8 @@ class Guard {
             let confirmation = (this.blockHeight - txBlockNumber) + 1
             if (confirmation >= this.confirmation) {
               event.confirmed = true
-              this.cb(null, event)
               this.queue.splice(this.queue.indexOf(event), 1)
+              this.cb(null, event)
             }
           }
         })
