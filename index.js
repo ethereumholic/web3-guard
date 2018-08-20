@@ -1,3 +1,3 @@
-let confirmed = require('./web3-guard')
+let Guard = require('./web3-guard')
 
-module.exports = confirmed
+module.exports = Guard
