@@ -13,7 +13,7 @@ let guard = new Guard(web3)
 guard.confirm(4, event.watch((err, result) => {
   if (err) console.error(err)
   if (!result.confirmed) {
-    guard.queue(result)
+    guard.enqueue(result)
   } else {
     console.log(result)
   }
