@@ -12,7 +12,7 @@ class Guard {
         let block = await web3.eth.getBlock(blockHash)
         this.blockHeight = parseInt(block.number)
 
-        this.queue.forEach(async (event, index) => {
+        this.queue.forEach(async (event) => {
           let txHash = event.transactionHash
           let receipt = await web3.eth.getTransactionReceipt(txHash)
           let txBlockNumber = receipt.blockNumber
@@ -22,7 +22,7 @@ class Guard {
             if (confirmation >= this.confirmation) {
               event.confirmed = true
               this.cb(null, event)
-              this.queue.splice(index, 1)
+              this.queue.splice(this.queue.indexOf(event), 1)
             }
           }
         })
