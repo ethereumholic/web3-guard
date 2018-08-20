@@ -1,0 +1,19 @@
+{
+  "name": "web3-guard",
+  "version": "1.0.0",
+  "description": "A Ethereum confirmation checker which supports all filter events in web3js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "contributors": [
+    {
+      "name": "Benajmin Lu",
+      "email": "coopermilk123@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "web3": "^0.20.7"
+  }
+}
