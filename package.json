@@ -1,6 +1,7 @@
 {
   "name": "web3-guard",
-  "version": "1.0.0",
+  "version": "0.1.1",
+  "homepage": "https://github.com/ethereumholic/web3-guard",
   "description": "A Ethereum confirmation checker which supports all filter events in web3js.",
   "main": "index.js",
   "scripts": {
@@ -10,13 +11,15 @@
     {
       "name": "Benajmin Lu",
       "email": "coopermilk123@gmail.com"
-    }, {
+    },
+    {
       "name": "Peter Lai",
       "email": "alk03073135@gmail.com"
     }
   ],
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "web3": "^0.20.7"
   }
 }
