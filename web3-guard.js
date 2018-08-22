@@ -5,6 +5,8 @@ class Guard {
     this.confirmation = null
     this.subscriptions = []
     this.doneCallback = null
+    this.bindID = null
+    this.bindTxshes = []
 
     let filter = this.web3.eth.filter('latest')
     filter.watch(async (err, blockHash) => {
@@ -81,7 +83,9 @@ class Guard {
           })
         })
 
-        this.doneCallback(targetBlockHeight)
+        if (this.doneCallback && this.doneCallback.constructor.name === 'Function') {
+          this.doneCallback(targetBlockHeight)
+        }
       }
     })
   }
@@ -136,11 +140,29 @@ class Guard {
   }
 
   wait (event) {
-    this.eventQueue.push(event)
+    let txHash = event.transactionHash
+    if (this.bindID) {
+      if (this.bindTxshes.indexOf(txHash) >= 0) {
+        this.eventQueue.push(event)
+      } else {
+        throw new Error(txHash + ' is not one of the binding transactions.')
+      }
+    } else {
+      this.eventQueue.push(event)
+    }
   }
 
   done (doneCallback) {
     this.doneCallback = doneCallback
+  }
+
+  do (txHash) {
+    this.bindTxshes.push(txHash)
+  }
+
+  bind (bindID) {
+    this.bindID = bindID
+    return this
   }
 }
 

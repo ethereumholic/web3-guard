@@ -10,6 +10,7 @@ let guard = new Guard(web3)
 let confirmations = 6
 
 guard
+.bind(1)
 .confirm(confirmations)
 .on(hotel, hotel.Transfer().watch((err, event) => {
   if (err) console.error(err)
