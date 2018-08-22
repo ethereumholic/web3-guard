@@ -144,8 +144,6 @@ class Guard {
     if (this.bindID) {
       if (this.bindTxshes.indexOf(txHash) >= 0) {
         this.eventQueue.push(event)
-      } else {
-        throw new Error(txHash + ' is not one of the binding transactions.')
       }
     } else {
       this.eventQueue.push(event)
