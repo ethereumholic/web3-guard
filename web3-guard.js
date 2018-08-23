@@ -83,9 +83,6 @@ class Guard {
           })
         })
 
-        console.log('event queue length: ' + this.eventQueue.length)
-        console.log('subscription length: ' + this.subscriptions.length)
-
         if (this.doneCallback && this.doneCallback.constructor.name === 'Function') {
           this.doneCallback(targetBlockHeight)
         }
