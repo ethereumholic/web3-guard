@@ -7,9 +7,9 @@ class Guard {
     this.doneCallback = null
     this.bindID = null
     this.bindTxshes = []
-
-    let filter = this.web3.eth.filter('latest')
-    filter.watch(async (err, blockHash) => {
+    this.listeningTxHashes = []
+    this.blockFilter = this.web3.eth.filter('latest')
+    this.blockFilter.watch(async (err, blockHash) => {
       if (!err) {
         let block = await this.web3.eth.getBlock(blockHash)
         let blockHeight = parseInt(block.number)
@@ -52,11 +52,11 @@ class Guard {
         }
 
         // contract event
-        this.subscriptions
-        .filter(subscription => subscription.type === 'contract_event')
-        .forEach(subscription => {
-          this.eventQueue.forEach(async (event) => {
-            let contractAddress = event.address
+        this.eventQueue.forEach(event => {
+          let contractAddress = event.address
+          this.subscriptions
+          .filter(subscription => subscription.type === 'contract_event')
+          .forEach(async subscription => {
             let targetContractAddress = subscription.contractAddress
             if (targetContractAddress === contractAddress) {
               let tx = await this.web3.eth.getTransaction(event.transactionHash)
@@ -65,7 +65,7 @@ class Guard {
                 blockNumber = parseInt(blockNumber)
                 if (blockNumber === event.blockNumber) {
                   let confirmation = (blockHeight - blockNumber) + 1
-                  if (confirmation >= this.confirmation) {
+                  if (confirmation === this.confirmation) {
                     // replay event
                     this.eventQueue.splice(this.eventQueue.indexOf(event), 1)
                     event.confirmed = true
@@ -82,6 +82,9 @@ class Guard {
             }
           })
         })
+
+        console.log('event queue length: ' + this.eventQueue.length)
+        console.log('subscription length: ' + this.subscriptions.length)
 
         if (this.doneCallback && this.doneCallback.constructor.name === 'Function') {
           this.doneCallback(targetBlockHeight)
@@ -141,9 +144,10 @@ class Guard {
 
   wait (event) {
     let txHash = event.transactionHash
-    if (this.bindID) {
-      if (this.bindTxshes.indexOf(txHash) >= 0) {
+    if (this.bindID !== null) {
+      if (this.listeningTxHashes.indexOf(txHash) >= 0) {
         this.eventQueue.push(event)
+        this.listeningTxHashes.splice(this.listeningTxHashes.indexOf(txHash), 1)
       }
     } else {
       this.eventQueue.push(event)
@@ -154,13 +158,30 @@ class Guard {
     this.doneCallback = doneCallback
   }
 
-  do (txHash) {
-    this.bindTxshes.push(txHash)
+  listen (txHash) {
+    if (this.listeningTxHashes.indexOf(txHash) < 0) {
+      this.listeningTxHashes.push(txHash)
+    }
   }
 
   bind (bindID) {
     this.bindID = bindID
     return this
+  }
+
+  destroy () {
+    if (this.blockFilter) {
+      this.blockFilter.stopWatching()
+    }
+
+    this.web3 = null
+    this.eventQueue = []
+    this.confirmation = null
+    this.subscriptions = []
+    this.doneCallback = null
+    this.bindID = null
+    this.bindTxshes = []
+    this.listeningTxHashes = []
   }
 }
 
