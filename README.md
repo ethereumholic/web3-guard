@@ -1,6 +1,6 @@
 # Web3 Guard
 
-**Web3 Guard** maintains a built-in confirmation checker for every Ethereum transactions, smart contract events and value transfers that may interest you. **Web3 Guard** provides a bunch of workflow utilities that you don't need to **DRY** adding confirmation checking of your dapps.
+**Web3 Guard** maintains a built-in confirmation checker for every Ethereum transactions, smart contract events and value transfers that may interest you. **Web3 Guard** provides a bunch of workflow utilities so you don't need to add confirmation checking to your dapps.
 
 ## Installation
 
@@ -37,7 +37,7 @@ guard
     console.error(err)
   } else {
     if (!event.confirmed) {
-      console.log('Not confirm ticket transfer: ' + event.transactionHash)
+      console.log('Unconfirmed ticket transfer: ' + event.transactionHash)
       guard.wait(event)
     } else {
       // the smart contract event has been finalized by Ethereum network(12 confirmations)
