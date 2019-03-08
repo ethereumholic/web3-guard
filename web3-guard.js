@@ -1,5 +1,14 @@
+const semver = require('semver')
+
 class Guard {
   constructor (web3) {
+    if (web3.version === undefined) {
+      throw new Error('Not supported web3 instance.')
+    }
+    let version = (web3.version.api === undefined) ? web3.version : web3.version.api
+    if (semver.gte(version, '1.0.0-beta.0')) {
+      throw new Error('Not supported web3 version.')
+    }
     this.web3 = web3
     this.eventQueue = []
     this.confirmation = null
