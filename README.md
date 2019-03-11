@@ -4,10 +4,10 @@
 
 ## Installation
 
-```javascript
+```BASH
 // The package is designed to work with web3js version 0.20.x
-npm install web3@0.20.7
-npm install web3-guard
+$npm install web3@0.20.7
+$npm install web3-guard
 ```
 
 ## Add confirmation checking for your dapps
